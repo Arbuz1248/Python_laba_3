@@ -1,8 +1,16 @@
-from fastapi import Cookie, FastAPI
+from typing import Annotated
+
+from fastapi import FastAPI, Path, Query
 
 app = FastAPI()
 
 
-@app.get("/items/")
-async def read_items(ads_id: str | None = Cookie(default=None)):
-    return {"ads_id": ads_id}
+@app.get("/items/{item_id}")
+async def read_items(
+    item_id: Annotated[int, Path(title="The ID of the item to get")],
+    q: Annotated[str | None, Query(alias="item-query")] = None,
+):
+    results = {"item_id": item_id}
+    if q:
+        results.update({"q": q})
+    return results
