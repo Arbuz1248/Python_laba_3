@@ -1,0 +1,1 @@
+echo "# Python_laba_3"
